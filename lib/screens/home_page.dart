@@ -2,6 +2,7 @@
 
 import 'package:favorite_movies_app/provider/movie_provider.dart';
 import 'package:favorite_movies_app/screens/favorite_movies_screen.dart';
+import 'package:favorite_movies_app/screens/movie_details_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -35,75 +36,87 @@ class HomePage extends StatelessWidget {
             itemBuilder: (context, index) {
               final movie = movies[index];
 
-              return Card(
-                elevation: 6,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    //movie cover photo
-                    Flexible(
-                      flex: 6,
-                      child: ClipRRect(
-                        borderRadius: const BorderRadius.vertical(
-                          top: Radius.circular(15),
-                        ),
-                        child: Image.asset(
-                          //height: 300,
-                          movie.coverPhoto,
-                          fit: BoxFit.cover,
+              return InkWell(
+                // on tap!
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MovieDetailsPage(movie: movie),
+                    ),
+                  );
+                },
+                child: Card(
+                  elevation: 6,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      //movie cover photo
+                      Flexible(
+                        flex: 6,
+                        child: ClipRRect(
+                          borderRadius: const BorderRadius.vertical(
+                            top: Radius.circular(15),
+                          ),
+                          child: Image.asset(
+                            //height: 300,
+                            movie.coverPhoto,
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
-                    ),
-                    Flexible(
-                      flex: 3,
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Column(
-                          children: [
-                            Text(
-                              movie.title,
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
+                      Flexible(
+                        flex: 3,
+                        child: Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Column(
+                            children: [
+                              Text(
+                                movie.title,
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                overflow: TextOverflow.ellipsis,
                               ),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            IconButton(
-                              icon: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Icon(
-                                    movie.isFavorite
-                                        ? Icons.favorite
-                                        : Icons.favorite_border,
-                                    color: movie.isFavorite ? Colors.red : null,
-                                  ),
-                                  Text(
-                                    movie.isFavorite
-                                        ? 'Added to Favorite'
-                                        : 'Add to Favorite!',
-                                    style: TextStyle(
-                                      fontWeight: movie.isFavorite
-                                          ? FontWeight.bold
-                                          : FontWeight.normal,
+                              IconButton(
+                                icon: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Icon(
+                                      movie.isFavorite
+                                          ? Icons.favorite
+                                          : Icons.favorite_border,
+                                      color:
+                                          movie.isFavorite ? Colors.red : null,
                                     ),
-                                  ),
-                                ],
+                                    Text(
+                                      movie.isFavorite
+                                          ? 'Added to Favorite'
+                                          : 'Add to Favorite!',
+                                      style: TextStyle(
+                                        fontWeight: movie.isFavorite
+                                            ? FontWeight.bold
+                                            : FontWeight.normal,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                onPressed: () {
+                                  movieProvider.toggleFavorite(movie.id);
+                                },
                               ),
-                              onPressed: () {
-                                movieProvider.toggleFavorite(movie.id);
-                              },
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               );
             },
