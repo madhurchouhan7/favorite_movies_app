@@ -18,51 +18,58 @@ class FavoriteMoviesScreen extends StatelessWidget {
         builder: (ctx, movieProvider, child) {
           final favoriteMovies = movieProvider.favoriteMovies;
 
-          return GridView.builder(
-            padding: const EdgeInsets.all(10),
-            itemCount: favoriteMovies.length,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              childAspectRatio: 0.7,
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 10,
-            ),
-            itemBuilder: (ctx, index) {
-              final movie = favoriteMovies[index];
+          return favoriteMovies.isEmpty
+              ? const Center(
+                  child: Text(
+                    "No Movies Added!",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                  ),
+                )
+              : GridView.builder(
+                  padding: const EdgeInsets.all(10),
+                  itemCount: favoriteMovies.length,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: 0.7,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                  ),
+                  itemBuilder: (ctx, index) {
+                    final movie = favoriteMovies[index];
 
-              return Card(
-                elevation: 5,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Expanded(
-                      child: ClipRRect(
-                        borderRadius: const BorderRadius.vertical(
-                            top: Radius.circular(15)),
-                        child: Image.asset(
-                          movie.coverPhoto,
-                          fit: BoxFit.cover,
-                        ),
+                    return Card(
+                      elevation: 5,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: Text(
-                        movie.title,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Expanded(
+                            child: ClipRRect(
+                              borderRadius: const BorderRadius.vertical(
+                                  top: Radius.circular(15)),
+                              child: Image.asset(
+                                movie.coverPhoto,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Text(
+                              movie.title,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  ],
-                ),
-              );
-            },
-          );
+                    );
+                  },
+                );
         },
       ),
     );
